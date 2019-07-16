@@ -2,14 +2,24 @@ function tourPlanner(totalMiles,whm,wht,speed,timeToCharge){
     let totalTime=0;
     let remainingMiles=totalMiles;
     let milesCanGo=wht/whm;
-    let rideTime=60/(speed/milesCanGo);
+    let timePerMile=60/speed;
+    let rideTime=timePerMile*milesCanGo;
     let stops=0;
 
     while(remainingMiles>0){
 	remainingMiles-=milesCanGo;
 	totalTime+=rideTime+timeToCharge;
 	stops++;
+	if(remainingMiles<0){
+	   let extraMiles=Math.abs(remainingMiles);
+	   remainingMiles=0;
+	   
+           totalTime-=timePerMile*extraMiles;
+	}
     }
+    
+    //remove final charge stop
+    totalTime-=timeToCharge;
 
     return { 
 	"Total Trip Miles"        : totalMiles,
